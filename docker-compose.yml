@@ -2,19 +2,13 @@ version: "3.5"
 
 services:
   web:
-    image: webdevops/php-nginx:7.3
-    working_dir: /app
+    build: ./
+    container_name: agorize-apache
     ports:
       - 80:80
-    depends_on:
-      - database
     volumes:
-      - .:/app
-    environment:
-      WEB_DOCUMENT_ROOT: /app/public
-      WEB_DOCUMENT_INDEX: index.php
-      PHP_DATE_TIMEZONE: "Europe/Paris"
-      PHP_DISPLAY_ERRORS: 1
+      - ./app:/var/www/html:Z
+      - ./logs:/var/log/httpd
 
   database:
     image: mysql:8.0
@@ -39,3 +33,7 @@ services:
     image: mailhog/mailhog
     ports:
       - "1025:1025"
+
+  bootstrap:
+    image: webdevops/bootstrap
+
